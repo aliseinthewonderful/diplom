@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <div class="container">
+      <div class="row">
+      </div>
+
+      <div class="row">
+        {% include 'sidebar.html' %}
+        <div class="col-lg-9 stretch-card grid-margin">
+          <div class="card">
+            <div class="card-body">
+              <div class="grid-margin">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="card-title">
+                    Новости
+                  </div>
+                  <a class="mb-3" href="/">Читать все</a>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-4 grid-margin">
+                  <div class="position-relative">
+                    <div class="rotate-img news-post-img">
+                        {% block content_img %}
+                      <img src="{{post.img}}" alt="thumb" class="img-fluid"/>
+                        {% endblock %}
+                      <br>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-sm-8 grid-margin">
+                  {% block content_title %}
+                  <h2 class="mb-2 font-weight-600">
+                    <a href="#">{{post.title}}</a>
+
+                  </h2>
+                  {% endblock %}
+                  {% block content_date %}
+                  <div class="fs-13 mb-2">
+                    {{post.date}}
+
+                  </div>
+                  {% endblock %}
+                   {% block content_body %}
+                  <p class="mb-0">
+                    {{post.body}}
+                  </p>
+
+                </div>
+              {% endblock %}
+
+              </div>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

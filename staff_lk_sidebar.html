@@ -1,0 +1,20 @@
+<div class="col-lg-3 stretch-card grid-margin">
+  <div class="card">
+    <div class="card-body">
+      <ul class="vertical-menu">
+        {% if is_admin or user.role == 2 %}
+          <li><a href="/orders/new">Новые заказы</a></li>
+          <li><a href="/orders/delivery">Заказы на выдачу</a></li>
+        {% endif %}
+        
+        {% if is_admin or user.role == 1 or user.role == 2 %}
+          <li><a href="/orders/processing">Заказы на исполнение</a></li>
+        {% endif %}
+
+        {% if is_admin or user.role == 2 %}
+          <li><a href="/orders/completed">Выполненные заказы</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>

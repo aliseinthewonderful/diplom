@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-3 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <ul class="vertical-menu">
+              <li class="active"><a href="/lk">Личный кабинет</a></li>
+              <li><a href="/cart">Корзина</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Пользователь: {{ name }}
+                </div>
+              </div>
+            </div>
+
+            <div class="card-title">
+              Текущие заказы
+            </div>
+
+
+            {% if current_orders|length >= 1 %}
+              <div class="w-100 order-items mb-3">
+                {% for order in current_orders %}
+                  <div class="order-item order-item-5 mb-2">
+                    <div class="order-item-id">
+                      {% if order.order_id %}
+                        №{{ order.order_id }}
+                      {% else %}
+                        №{{ order.id }}
+                      {% endif %}
+                    </div>
+
+
+                    <div class="order-item-goods">
+                      {% if order.get_products()|length >= 1 %}
+                        {% for product in order.get_products() %}
+                          <span>{{product.name}} {{product.count}}шт. </span>
+                        {% endfor %}
+                      {% endif %}
+
+                      {% if order.get_services()|length >= 1 %}
+                        {% for service in order.get_services() %}
+                          <span>{{service.name}} </span>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+
+                    <div class="order-item-cost">
+                      {{order.cost}} рублей
+                    </div>
+
+                    <div class="order-item-address">
+                      {{order.address}}
+                    </div>
+
+                    <div class="order-item-comment">
+                      {{order.comment}}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if completed_orders|length >= 1 %}
+              <div class="card-title">
+                Выполненные заказы
+              </div>
+              <div class="w-100 order-items mb-3">
+                {% for order in completed_orders %}
+                  <div class="order-item order-item-5 mb-2">
+                    <div class="order-item-id">
+                      №{{ order.order_id }}
+                    </div>
+
+
+                    <div class="order-item-goods">
+                      {% if order.get_products()|length >= 1 %}
+                        {% for product in order.get_products() %}
+                          <span>{{product.name}} {{product.count}}шт. </span>
+                        {% endfor %}
+                      {% endif %}
+
+                      {% if order.get_services()|length >= 1 %}
+                        {% for service in order.get_services() %}
+                          <span>{{service.name}} </span>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+
+                    <div class="order-item-cost">
+                      {{order.cost}} рублей
+                    </div>
+
+                    <div class="order-item-address">
+                      {{order.address}}
+                    </div>
+
+                    <div class="order-item-comment">
+                      {{order.comment}}
+                    </div>
+
+                    <div class="order-item-comment">
+                      {{order.oplata}}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

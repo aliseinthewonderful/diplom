@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+      {% include 'staff_lk_sidebar.html' %}
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Пользователь: {{name}}
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

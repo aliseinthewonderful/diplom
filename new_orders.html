@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+      {% include 'staff_lk_sidebar.html' %}
+
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Новые заказы
+                </div>
+              </div>
+            </div>
+
+            <!-- Если заказы есть -->
+            {% if orders|length >= 1 %}
+              <select class="custom-select mb-4" id="select_worker">
+                <option value="none" disabled selected hidden>Выберите рабочего...</option>
+                <!-- Список рабочих -->
+                {% for worker in workers %}
+                  <option value="{{worker.id}}">{{worker.name}}</option>
+                {% endfor %}
+              </select>
+
+              <div class="w-100 order-items mb-3">
+                <!-- Делаем цикл по заказам -->
+                {% for order in orders %}
+                  <div class="order-item-border-bottom mb-4">
+                    <div class="order-item mb-2">
+                      <div class="order-item-id">
+                        <li><a href="/edit/{{ order.id }}">№ {{ order.id }}</a></li>
+                      </div>
+
+                      <div class="order-item-goods">
+                        {% if order.get_products()|length >= 1 %}
+                          {% for product in order.get_products() %}
+                            <span>{{product.name}} {{product.count}}шт. </span>
+                          {% endfor %}
+                        {% endif %}
+
+                        {% if order.get_services()|length >= 1 %}
+                          {% for service in order.get_services() %}
+                            <span>{{service.name}} {{service.count}}шт. </span>
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+
+                      <div class="order-item-cost">
+                        {{order.cost}} рублей
+                      </div>
+
+                      <div class="order-item-address">
+                        {{order.address}}
+                      </div>
+
+                      <div class="order-item-comment">
+                        {{order.comment}}
+                      </div>
+
+                      <div class="order-item-delivery">
+                        {% if order.delivery %}
+                          С доставкой
+                        {% else %}
+                          Без доставки
+                        {% endif %}
+                      </div>
+
+                      <div class="order-item-phone">
+                        тел: {{get_user(order.client_id).phone}}
+                      </div>
+
+                      <div class>
+                      </div>
+                      <div class>
+                      </div>
+                      <div class>
+                      </div>
+                      <div class>
+                      </div>
+                      <div class>
+                      </div>
+                      <div class>
+                      </div>
+
+                      <div class="order-item-oplata">
+                        {{order.oplata}}
+                      </div>
+                    </div>
+                    <div class="order-buttons">
+                      {% if not order.delivery and order.get_services()|length == 0 %}
+                        <div class="lk_button w-100" onclick="submit('{{order.id}}', 'delivery')">Отправить на выдачу</div>
+                      {% else %}
+                        <div class="lk_button w-100" onclick="submit('{{order.id}}', 'complete')">Подтвердить</div>
+                      {% endif %}
+
+                      <div class="lk_button w-100" onclick="submit('{{order.id}}', 'worker')">
+                        На исполнение
+                      </div>
+
+                      <div class="lk_button w-100" onclick="cancel('{{order.id}}')">
+                        Отменить
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function submit(id, state) {
+    let buttons = document.querySelectorAll('.lk_button');
+    let workerId = document.querySelector('#select_worker').value;
+    // Если отправляет заказ на исполенние, но работник не выбран, то ничего не делаем
+    if (state === 'worker' && workerId == "none") return;
+
+    buttons.forEach((item) => item.classList.add('inactive'))
+
+    // Отправляем запрос на подтверждение
+    fetch('/api/orders/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        order_id: id,
+        state,
+        worker_id: workerId,
+      })
+    }).then(res => {
+      window.location.reload()
+    }).catch(() => {
+      buttons.forEach((item) => item.classList.remove('inactive'))
+    })
+  }
+
+  function cancel(id) {
+    let buttons = document.querySelectorAll('.lk_button');
+
+    buttons.forEach((item) => item.classList.add('inactive'))
+
+    // Запрос на отмену заказа
+    fetch('/api/orders/cancel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        order_id: id,
+      })
+    }).then(res => {
+      window.location.reload()
+    }).catch(() => {
+      buttons.forEach((item) => item.classList.remove('inactive'))
+    })
+  }
+</script>
+{% endblock %}

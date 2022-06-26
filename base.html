@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>ВДПО Марий Эл</title>
+
+  <link rel="stylesheet" href="../static/css/materialdesignicons.css" />
+
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+  <header id="header">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light">
+
+        <div class="navbar-bottom">
+          <div class="d-flex justify-content-center align-items-center">
+            <div>
+              <a class="navbar-brand" href="/"><img src="../static/img/logo.png" alt="" /></a>
+            </div>
+            <div>
+              <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="navbar-collapse justify-content-center collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav d-lg-flex justify-content-between align-items-center">
+                  <li>
+                    <button class="navbar-close">
+                      <i class="mdi mdi-close"></i>
+                    </button>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="/">Главная</a>
+                  </li>
+                  <li class="nav-item dropdown dropdown-hover">
+                    <a class="nav-link text-center" href="#">Об организации</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/history">История ВДПО</a>
+                      <a class="dropdown-item" href="/join">Как стать членом ВДПО</a>
+                      <a class="dropdown-item" href="/rasskrinf">Расскрытие информации</a>
+                      <a class="dropdown-item" href="/symbolism">Символика</a>
+                      <a class="dropdown-item" href="/ustav">Устав</a>
+                      <a class="dropdown-item" href="/targets">Цели и задачи</a>
+                      <a class="dropdown-item" href="/posts">Цели и задачи</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown dropdown-hover">
+                    <a class="nav-link text-center" href="#">Виды деятельности</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/ispit-mont-p">Испытания монтажных поясов и веревок</a>
+                      <a class="dropdown-item" href="/ognezobr">Огнезащитная обработка</a>
+                      <a class="dropdown-item" href="/plan">Планы эвакуации</a>
+                      <a class="dropdown-item" href="/project">Системы ОПС</a>
+                      <a class="dropdown-item" href="/tehobsl">ТО и ремонт огнетушителей</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown dropdown-hover">
+                    <a class="nav-link text-center" href="#">Учебный центр</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/obuchp">Обучение ПТМ</a>
+                      <a class="dropdown-item" href="/obuchmotorist">Обучение мотористов мотопомп</a>
+                      <a class="dropdown-item" href="/obuchdpk">Обучение специалистов ДПК, ДПД</a>
+                      <a class="dropdown-item" href="/dopobraz">Дополнительное профессиональное <br> образование</a>
+                      <a class="dropdown-item" href="/vakant">Вакантные места для приёма <br> (перевода) обучающихся</a>
+                      <a class="dropdown-item" href="/obuchGOCHS">Обучение по программе ГОЧС </a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown dropdown-hover">
+                    <a class="nav-link" href="#">Каталог</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/products">Товары</a>
+                      <a class="dropdown-item" href="/services">Услуги</a>
+
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/contacts">Контакты</a>
+                  </li>
+                  <li class="nav-item">
+                    {% if not current_user.is_authenticated %}
+                    <a class="nav-link" href="/auth">Авторизация</a>
+                    {% endif %}
+
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-link" href="/lk">Личный кабинет</a>
+                    {% endif %}
+                  </li>
+
+                  <li class="nav-item">
+                    {% if current_user.is_authenticated %}
+                    <a href="/logout" class="nav-link">Выйти</a>
+                    {% endif %}
+                  </li>
+
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="flash-news-banner">
+    <div class="container">
+      <div class="d-lg-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="badge badge-dark mr-3">
+            <i class="mdi mdi-phone"></i> - 01
+          </span>
+          <span class="badge badge-dark mr-3">
+            <i class="mdi mdi-cellphone"></i> - 112
+          </span>
+          <p class="mb-0">
+            Единый телефон службы спасения
+          </p>
+        </div>
+        <div class="d-flex">
+          <script src = "script1.js"></script>
+          <span class="mr-3 text-danger" id="current_date"></span>
+          <span class="text-danger"> Йошкар-Ола</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% block content %} {% endblock %}
+
+  <footer>
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-5">
+            <img src="../static/img/logo.png" class="footer-logo" alt="" />
+            <h5 class="font-weight-normal mt-4 mb-4">
+              Марийское республиканское отделение ВДПО
+            </h5>
+            <h5 class="font-weight-normal mt-2 mb-2">
+              424032, Республика Марий Эл, г. Йошкар-Ола, ул. Героев Сталинградской Битвы, дом 12 А
+            </h5>
+            <h5 class="font-weight-normal mt-2 mb-5">
+              Тел.: +7 (8362) 38-00-13, 38-00-23
+            </h5>
+            <ul class="social-media mb-3">
+              <li>
+                <a href="https://vk.com/vdpo_12">
+                  <i class=" mdi-vk"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/vdpo_12/">
+                  <i class="mdi mdi-instagram"></i>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+          <div class="col-sm-4">
+          </div>
+          <div class="col-sm-3">
+            <h3 class="font-weight-bold mb-3">Навигация по порталу</h3>
+            <div class="footer-border-bottom pb-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="mb-0 font-weight-600 text-white" href="/">Новости</a>
+              </div>
+            </div>
+            <div class="footer-border-bottom pb-2 pt-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="mb-0 font-weight-600 text-white" href="/auth?type=employee">Сотрудникам</a>
+              </div>
+            </div>
+            <div class="footer-border-bottom pb-2 pt-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="mb-0 font-weight-600 text-white" href="/auth?type=worker">Рабочим</a>
+              </div>
+            </div>
+            <div class="footer-border-bottom pb-2 pt-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="mb-0 font-weight-600 text-white" href="/documents">Документы</a>
+              </div>
+            </div>
+            <div class="footer-border-bottom pb-2 pt-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="mb-0 font-weight-600 text-white" href="/social-activities">Социально-ориентированная деятельность</a>
+              </div>
+            </div>
+            <div class="pt-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="mb-0 font-weight-600 text-white" href="/contacts">Контакты</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const today = new Date();
+
+    const monthName = today.toLocaleString('ru', { month: 'long' });
+    const dateFormatted = today.getDate() + ', ' + monthName;
+
+    document.getElementById("current_date").innerText = dateFormatted;
+  </script>
+</body>

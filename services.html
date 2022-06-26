@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+    <div class="row">
+      {% include 'sidebar.html' %}
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Услуги
+                </div>
+              </div>
+            </div>
+
+            <div class="w-100 catalog-items">
+              {% for service in services %}
+              <div class="catalog-item catalog-item_serivce">
+                <p class="catalog-item-name">{{service.name}}</p>
+
+                {% if service.price  %}
+                <p class="catalog-item-price">{{service.price}} рублей</p>
+                {% else %}
+                <p class="catalog-item-price">Согласно смете</p>
+                {% endif %}
+
+                {% if user  %}
+                <a href="#" class="lk_button" id="lk_button-{{service.id}}" onclick="addCart('{{ service.id }}')">Добавить в корзину</a>
+                {% else %}
+                <a href="#" class="lk_button lk_button_inactive">Авторизуйтесь</a>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function addCart(itemId) {
+    let addCardBtn = document.querySelector(`#lk_button-${itemId}`);
+
+    addCardBtn.classList.add('lk_button_inactive');
+
+    fetch('/api/cart/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        id: itemId,
+        type: 'services'
+      })
+    }).then(res => {
+      addCardBtn.classList.remove('lk_button_inactive');
+    }).catch(() => {
+      addCardBtn.classList.remove('lk_button_inactive');
+    })
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-3 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <!-- <h2>Портал</h2> -->
+            <ul class="vertical-menu">
+              <li><a href="/lk">Личный кабинет</a></li>
+              <li><a href="/cart">Корзина</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Оформление заказа
+                  <i class="mdi mdi-close clear-cart" onclick="clearCart()"></i>
+                </div>
+              </div>
+            </div>
+
+            {% if cart|length >= 1 %}
+              <div class="w-100 cart-items mb-3">
+                {% for item in cart %}
+                  <div class="cart-item mb-2">
+                    <div class="cart-item-name">
+                      {{ item.name }}
+                    </div>
+
+                    <div class="cart-item-count">
+                      {% if item.count and not item.type == "services" %}
+                        {{ item.count }} шт
+                      {% endif %}
+                    </div>
+
+                    <div class="cart-item-price">
+                      {% if item.price and item.count %}
+                        {{ item.price * item.count }} рублей
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="row ml-0 mr-0">
+                <label for="address">Адрес</label>
+                <input type="text" class="form-control" id="address" aria-describedby="address" placeholder="Введите адрес...">
+              </div>
+              <br>
+
+              <div class="row ml-0 mr-0">
+                <label for="address">Комментарий</label>
+                <input type="text" class="form-control" id="comment" aria-describedby="comment" placeholder="Комментарий к заказу...">
+              </div>
+              <br>
+
+              <div class="row ml-0 d-flex w-100 justify-content-between mb-3">
+                <div>Cтоимость</div>
+                <div>{{cost}} рублей</div>
+              </div>
+
+              <div class="row ml-0 d-flex w-100 justify-content-between align-items-center mb-3">
+                <div>Доставка</div>
+                <input type="checkbox" name="delivery" id="use_delivery" class="form-check-label">
+              </div>
+
+              <select class="custom-select mb-4" id="oplata">
+                <option value="none" disabled selected hidden >Выберите вид оплаты...</option>
+                  <option value="delivery">Оплата при получении</option>
+                  <option value="online">Оплата онлайн</option>
+              </select>
+
+
+              <div class="mb-0">
+                <a href="#" class="lk_button" id="submit" onclick="submit()">Оформить заказ</a>
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function submit() {
+    let cost = "{{cost}}";
+    let submit_btn = document.querySelector('#submit');
+    let address = document.querySelector('#address').value;
+    let comment = document.querySelector('#comment').value;
+    let delivery = document.querySelector('#use_delivery').checked;
+    let oplata = document.querySelector('#oplata').value;
+    let paymentText = oplata === "online" ? "Оплата онлайн" : "Оплата при получении"
+
+    if (!address) return
+    submit_btn.classList.add('inactive');
+
+    fetch('/api/orders/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        delivery,
+        address,
+        comment,
+        oplata: paymentText,
+        paymentType: oplata,
+        cost
+      })
+    }).then(async res => {
+      data = await res.json()
+      submit_btn.classList.remove('inactive');
+      window.location.href = data.redirect_url || '/lk'; 
+    }).catch(() => {
+      submit_btn.classList.remove('inactive');
+    })
+  }
+
+  function clearCart() {
+    fetch('/api/cart/clear', {
+      method: 'POST',
+    }).then(res => {
+      window.location.reload();
+    })
+  }
+</script>
+{% endblock %}

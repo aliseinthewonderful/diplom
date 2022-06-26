@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+      {% include 'staff_lk_sidebar.html' %}
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Заказы на исполнение
+                </div>
+              </div>
+            </div>
+
+            {% if orders|length >= 1 %}
+              <div class="w-100 order-items mb-3">
+                {% for order in orders %}
+                  <div class="order-item-border-bottom mb-4">
+                    <div class="order-item order-item-processing mb-2">
+                      <div class="order-item-id">
+                        <li><a href="/edit/{{ order.order_id }}">№ {{ order.order_id }}</a></li>
+                      </div>
+
+                      <div class="order-item-goods">
+                        {% if order.get_products()|length >= 1 %}
+                          {% for product in order.get_products() %}
+                            <span>{{product.name}} {{product.count}}шт. </span>
+                          {% endfor %}
+                        {% endif %}
+
+                        {% if order.get_services()|length >= 1 %}
+                          {% for service in order.get_services() %}
+                            <span>{{service.name}} </span>
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+
+                      <div class="order-item-address">
+                        {{order.address}}
+                      </div>
+
+                      <div class="order-item-comment">
+                        {{order.comment}}
+                      </div>
+
+                      <div class="order-item-delivery">
+                        {% if order.delivery %}
+                          С доставкой
+                        {% else %}
+                          Без доставки
+                        {% endif %}
+                      </div>
+
+                      <div class="order-item-phone">
+                        тел: {{get_user(order.client_id).phone}}
+                      </div>
+                    </div>
+
+                    <div class="row col-lg-12 mb-4">
+                      <label class="col-lg-6">Введите прогресс выполнения заказа (%):</label>
+                      <input type="number" min="0" max="100" class="form-control form-control-sm col-lg-6" id="order-progress-{{ order.order_id }}" value="{{order.progress}}" aria-describedby="progress">
+                    </div>
+
+                    <div class="order-buttons mb-3">
+                      <div class="lk_button w-100" onclick="submit('{{order.order_id}}')">
+                        Сохранить
+                      </div>
+
+                      <div class="lk_button w-100" onclick="submit('{{order.order_id}}', true)">
+                        Заказ выполнен
+                      </div>
+
+                      <div class="lk_button w-100" onclick="deleteOrder('{{order.order_id}}')">
+                        Удалить
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function deleteOrder(order_id) {
+    const buttons = document.querySelectorAll('.lk_button');
+
+    buttons.forEach((item) => item.classList.add('inactive'));
+
+    fetch('/api/orders/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        order_id: order_id
+      })
+    }).then(res => {
+      window.location.reload()
+    }).catch(() => {
+      buttons.forEach((item) => item.classList.remove('inactive'))
+    });
+  }
+
+  function submit(order_id, isComplete = false) {
+    let buttons = document.querySelectorAll('.lk_button');
+    let progressInput = document.querySelector(`#order-progress-${order_id}`);
+    let progress = Number(progressInput.value) || 0;
+
+    if (isComplete) {
+      progress = 100;
+    }
+
+    if (!progress) return;
+    buttons.forEach((item) => item.classList.add('inactive'));
+
+    fetch('/api/orders/progress', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        order_id: order_id,
+        progress: progress
+      })
+    }).then(res => {
+      window.location.reload()
+    }).catch(() => {
+      buttons.forEach((item) => item.classList.remove('inactive'))
+    })
+
+  }
+</script>
+{% endblock %}

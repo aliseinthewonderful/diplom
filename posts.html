@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>ВДПО Марий Эл</title>
+
+  <link rel="stylesheet" href="../static/css/materialdesignicons.css" />
+
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+  <header id="header">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light">
+
+        <div class="navbar-bottom">
+          <div class="d-flex justify-content-center align-items-center">
+            <div>
+              <a class="navbar-brand" href="/"><img src="../static/img/logo.png" alt="" /></a>
+            </div>
+            <div>
+              <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="navbar-collapse justify-content-center collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav d-lg-flex justify-content-between align-items-center">
+                  <li>
+                    <button class="navbar-close">
+                      <i class="mdi mdi-close"></i>
+                    </button>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="/posts">Блог</a>
+                  </li>
+
+                  <li class="nav-item dropdown dropdown-hover">
+                    <a class="nav-link text-center" href="#">Виды деятельности</a>
+
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Посты
+                </div>
+
+              </div>
+            </div>
+            
+            <div class="w-100 catalog-items">
+              <div class="catalog-item">
+              {% for post in posts %}
+                 <div class="row">{{post.title}}</div>
+            <br>
+
+
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

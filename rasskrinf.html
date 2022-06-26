@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+
+    <div class="row">
+      {% include 'sidebar.html' %}
+
+      <div class="col-lg-9 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                  Раскрытие информации
+                </div>
+
+              </div>
+            </div>
+
+            <ul class="vertical-menu1">
+              <li><a href="../static/img/otchet_minyust_2016.pdf">Отчет Минюст 2016</a></li>
+              <li><a href="../static/img/otchet_minyust_2017.pdf">Отчет Минюст 2017</a></li>
+              <li><a href="../static/img/otchet_minyust_2018.pdf">Отчет Минюст 2018</a></li>
+              <li><a href="../static/img/otchet_minyust_2019.pdf">Отчет Минюст 2019</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
